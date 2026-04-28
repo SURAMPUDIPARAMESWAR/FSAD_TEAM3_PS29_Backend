@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/marks")
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "https://fsad-team-3-ps-29.vercel.app"})
 public class MarksController {
 
     @Autowired
