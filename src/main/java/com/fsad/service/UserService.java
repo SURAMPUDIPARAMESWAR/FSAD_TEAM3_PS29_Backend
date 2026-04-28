@@ -14,9 +14,11 @@ public class UserService {
     @Autowired
     private UserRepository repo;
 
+    @Autowired
+    private JwtUtil jwtUtil; // ✅ ADD THIS
+
     public String register(User user) {
 
-        // Check duplicate email
         if (repo.findByEmail(user.getEmail()) != null) {
             return "User already exists";
         }
@@ -25,32 +27,26 @@ public class UserService {
         return "Registered successfully";
     }
 
-    
     public Object login(String email, String password) {
 
-        // ✅ ADMIN LOGIN (hardcoded)
+        // ✅ ADMIN LOGIN
         if (email.equals("admin@gmail.com") && password.equals("admin123")) {
 
-            String token = JwtUtil.generateToken(email);
+            String token = jwtUtil.generateToken(email); // ✅ FIXED
 
             return new AuthResponse(token, "admin", email);
         }
 
-        // ✅ STUDENT LOGIN (DB)
+        // ✅ STUDENT LOGIN
         User user = repo.findByEmail(email);
 
         if (user != null && user.getPassword().equals(password)) {
 
-            String token = JwtUtil.generateToken(email);
+            String token = jwtUtil.generateToken(email); // ✅ FIXED
 
             return new AuthResponse(token, "student", email);
         }
 
         return null;
     }
-    
-
-    
-
-    
 }
